@@ -1,20 +1,69 @@
-<<<<<<< HEAD
-# ft-diamond-facets
-=======
-# Sample Hardhat Project
+# Diamond Standard Implementation for Ethereum Smart Contracts
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
+## Overview
 
-Try running some of the following tasks:
+This project provides a framework for creating upgradeable smart contracts on the Ethereum blockchain using the Diamond Standard. It allows developers to create modular and upgradeable smart contracts by separating the logic into facets that can be added or removed without changing the main contract.
 
-```shell
-<<<<<<< HEAD
-npx hardhat help
+## Why This Project Exists
 
-=======
+The project exists to solve the problem of upgradability in Ethereum smart contracts. By implementing the Diamond Standard, developers can easily upgrade their smart contracts without disrupting the existing functionality or losing state data.
+
+## Main Technologies and Frameworks
+
+- **Solidity**: The smart contracts are written in Solidity, the programming language for Ethereum smart contracts.
+- **Hardhat**: The project uses Hardhat as the development environment for Ethereum smart contracts.
+- **TypeScript**: Some of the scripts and configurations are written in TypeScript.
+- **pnpm**: The project uses pnpm as the package manager.
+- **Ethereum**: The project is built for the Ethereum blockchain.
+
+## Codebase Organization
+
+- **contracts**: Contains the main smart contracts, including facets for different functionalities like DiamondCut, DiamondLoupe, ERC20, ERC3643, Ownership, and test contracts.
+- **interfaces**: Contains the interfaces used in the smart contracts.
+- **libraries**: Contains the libraries used in the project.
+- **upgradeInitializers**: Contains the initialization logic for the Diamond contract.
+- **scripts**: Contains deployment scripts for the smart contracts.
+- **test**: Contains test scripts for testing the smart contracts.
+- **hardhat.config.ts**: Contains the configuration for the Hardhat development environment.
+- **package.json**: Contains the project dependencies.
+- **pnpm-lock.yaml**: Contains the lock file for pnpm.
+- **README.md**: This file.
+- **tsconfig.json**: Contains the TypeScript configuration for the project.
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js
+- pnpm
+- Hardhat
+
+### Installation
+
+1. Clone the repository:
+git clone https://github.com/FeverTokens/ft-diamond-facet.git
+
+2. Navigate to the project directory:
+cd yourrepository
+
+3. Install dependencies:
 pnpm install
+
+
+### Running the Project
+
+- To compile the smart contracts:
 npx hardhat compile
->>>>>>> 248019e69ab49fcba4c098bfe5a6b84690e5913f
-npx hardhat run scripts/main.ts
-```
->>>>>>> 614da7a (Diamond with facets)
+
+- To deploy the smart contracts:
+npx hardhat run --network networkName scripts/deploy.js
+
+ Replace `networkName` with the name of the network you want to deploy to.
+
+## Contributing
+
+Contributions are welcome! Please read the [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
+
+## License
+
+This project is licensed under the MIT License
