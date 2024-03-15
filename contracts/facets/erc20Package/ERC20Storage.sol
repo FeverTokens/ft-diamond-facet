@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
-
+pragma solidity >=0.7.0 <0.9.0;
 library ERC20Storage {
 
     struct Layout {
@@ -15,7 +14,7 @@ library ERC20Storage {
         address _owner;
     }
 
-    bytes32 constant STORAGE_SLOT = keccak256(abi.encode(uint256(keccak256("ERC20.storage.ERC20")) - 1)) & ~bytes32(uint256(0xff));
+    bytes32 constant STORAGE_SLOT = keccak256(abi.encode(uint256(keccak256("ft.storage.ERC20")) - 1)) & ~bytes32(uint256(0xff));
 
     function layout() internal pure returns (Layout storage l) {
         bytes32 slot = STORAGE_SLOT;

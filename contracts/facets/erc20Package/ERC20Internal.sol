@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity >=0.7.0 <0.9.0;
 
 import "./IERC20Internal.sol";
 import "./ERC20Storage.sol";
@@ -35,10 +35,10 @@ abstract contract ERC20Internal is IERC20Internal {
         ERC20Storage.Layout storage l = ERC20Storage.layout();
         uint256 fromBalance = l._balances[from];
         require(fromBalance >= amount, "ERC20: transfer amount exceeds balance");
-        unchecked {
+        // unchecked {
             l._balances[from] = fromBalance - amount;
             l._balances[to] += amount;
-        }
+        // }
 
         emit Transfer(from, to, amount);
 
@@ -52,9 +52,9 @@ abstract contract ERC20Internal is IERC20Internal {
 
         ERC20Storage.Layout storage l = ERC20Storage.layout();
         l._totalSupply += amount;
-        unchecked {
+        // unchecked {
             l._balances[account] += amount;
-        }
+        // }
         emit Transfer(address(0), account, amount);
 
         _afterTokenTransfer(address(0), account, amount);
@@ -68,10 +68,10 @@ abstract contract ERC20Internal is IERC20Internal {
         ERC20Storage.Layout storage l = ERC20Storage.layout();
         uint256 accountBalance = l._balances[account];
         require(accountBalance >= amount, "ERC20: burn amount exceeds balance");
-        unchecked {
+        // unchecked {
             l._balances[account] = accountBalance - amount;
             l._totalSupply -= amount;
-        }
+        // }
 
         emit Transfer(account, address(0), amount);
 
