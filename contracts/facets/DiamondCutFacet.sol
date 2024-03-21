@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity >=0.7.0 <0.9.0;
+pragma experimental ABIEncoderV2;
 
 /******************************************************************************\
 * Author: Nick Mudge <nick@perfectabstractions.com> (https://twitter.com/mudgen)
@@ -25,6 +26,12 @@ contract DiamondCutFacet is IDiamondCut {
         bytes calldata _calldata
     ) external override {
         LibDiamond.enforceIsContractOwner();
+        // Check for duplicate function selectors before performing the diamond cut
+        // LibDiamond.checkForDuplicateFunctionSelectors(_diamondCut);(_diamondCut);
         LibDiamond.diamondCut(_diamondCut, _init, _calldata);
     }
+
+
+   
+
 }

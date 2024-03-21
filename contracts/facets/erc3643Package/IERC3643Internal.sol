@@ -22,7 +22,7 @@ interface IERC3643Internal {
     event TransferComplianceCheck(address indexed _from, address indexed _to, uint256 _amount, bool _isCompliant);
     event RecoveryAddressSet(address indexed _agent, address indexed _newRecoveryAddress);
     event RecoveryInitiated(address indexed _lostWallet, address indexed _newWallet);
-    event Transfer(address indexed from, address indexed to, uint256 value);
+    event TransferERC3643(address indexed from, address indexed to, uint256 value);
     event TokensFrozen(address indexed user, uint256 amount);
     event TokensUnfrozen(address indexed user, uint256 amount);
     event WalletFrozen(address indexed user);

@@ -67,7 +67,7 @@ abstract contract ERC3643Internal is IERC3643Internal {
         require(l.balances[_from] >= _amount, "Insufficient balance");
         l.balances[_from] -= _amount;
         l.balances[_to] += _amount;
-        emit Transfer(_from, _to, _amount);
+        emit TransferERC3643(_from, _to, _amount);
     }
 
     function _mint(address _to, uint256 _amount) internal {
@@ -75,7 +75,7 @@ abstract contract ERC3643Internal is IERC3643Internal {
         ERC3643Storage.Layout storage l = ERC3643Storage.layout();
         l.totalSupply += _amount;
         l.balances[_to] += _amount;
-        emit Transfer(address(0), _to, _amount);
+        emit TransferERC3643(address(0), _to, _amount);
     }
 
     function _burn(address _userAddress, uint256 _amount) internal {
@@ -84,7 +84,7 @@ abstract contract ERC3643Internal is IERC3643Internal {
         require(l.balances[_userAddress] >= _amount, "Insufficient balance");
         l.totalSupply -= _amount;
         l.balances[_userAddress] -= _amount;
-        emit Transfer(_userAddress, address(0), _amount);
+        emit TransferERC3643(_userAddress, address(0), _amount);
     }
 
     function _forcedTransfer(address _from, address _to, uint256 _amount) internal {
@@ -93,7 +93,7 @@ abstract contract ERC3643Internal is IERC3643Internal {
         require(l.balances[_from] >= _amount, "Insufficient balance");
         l.balances[_from] -= _amount;
         l.balances[_to] += _amount;
-        emit Transfer(_from, _to, _amount);
+        emit TransferERC3643(_from, _to, _amount);
     }
 
     // Additional internal functions as required by the ERC-3643 standard

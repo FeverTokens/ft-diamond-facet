@@ -1,12 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
-
-/******************************************************************************\
-* Author: Nick Mudge <nick@perfectabstractions.com> (https://twitter.com/mudgen)
-* EIP-2535 Diamonds: https://eips.ethereum.org/EIPS/eip-2535
-*
-* Implementation of a diamond.
-/******************************************************************************/
+pragma solidity >=0.7.0 <0.9.0;
 
 import {LibDiamond} from "./libraries/LibDiamond.sol";
 import {IDiamondCut} from "./interfaces/IDiamondCut.sol";
@@ -16,10 +9,8 @@ contract Diamond {
     constructor(
         address _contractOwner,
         address _diamondCutFacet,
-        string memory tokenName,
-        string memory tokenSymbol,
-        // uint8 tokenDecimal,
-        // uint256 tokenSupply,
+        // string memory tokenName,
+        // string memory tokenSymbol,
         address facetAddress,
         bytes memory constructData
     ) payable {
@@ -31,34 +22,32 @@ contract Diamond {
         functionSelectors[0] = IDiamondCut.diamondCut.selector;
         cut[0] = IDiamondCut.FacetCut({facetAddress: _diamondCutFacet, action: IDiamondCut.FacetCutAction.Add, functionSelectors: functionSelectors});
         LibDiamond.diamondCut(cut, facetAddress, constructData);
-
-       
-        // Set the token details directly in the Diamond constructor
-        // Note: This is not recommended for a diamond pattern because it couples the Diamond contract with the ERC20Facet's implementation details.
-        // It's better to use an initialize function in the ERC20Facet and call it from the Diamond constructor using a delegatecall.
-          // Use delegatecall to call the initialize function in the ERC20Facet
-          bytes memory data = abi.encodeWithSignature("initialize(string,string,uint256,address)", tokenName, tokenSymbol, _contractOwner);
-          LibDiamond.diamondCut(cut, facetAddress, data);
-        
-        // Examples of ways to mint ERC20 token on deployment
-
-        // Eg:1
-        // token._balances[_contractOwner] = tokenSupply;
-        // emit Transfer(address(0), account, amount);
-
-        // Eg:2
-        /**
-        1. Import AppStorage into Diamond.sol and declare it in Diamond.sol so you can use it. For example: AppStorage storage s 
-        2. Then copy the internal function _mint() from your facet into Diamond.sol  and call it in the constructor function
-        If _mint() calls other internal functions then you need to copy those into Diamond.sol too
-        If there is a lot of copying then I suggest instead making Diamond inherit a contract that includes the internal functions you need so you can call _mint 
-        Or you could create a Solidity library with only internal functions which includes _mint   and import and use that in your Diamond.sol and in your ERC20Facet.   This way you are only have the code in one place (the Solidity library)  and you can import and use it in different places.
-        The other way to handle this is this:
-        1. Deploy your ERC20Facet.
-        2. Pass the ERC20Face address as a parameter to the Diamond.sol constructor function and execute mint  with delegatecall on the ERC20Facet address,   and make sure your diamond has permission to call that function 
-         */
     }
 
+    // Function to initialize the diamond contract
+    function initialize(
+        string memory tokenName,
+        string memory tokenSymbol,
+        address _contractOwner
+    ) external {
+        require(msg.sender == LibDiamond.contractOwner(), "Diamond: Must be contract owner");
+
+        // Retrieve the facet address from the diamond storage
+        LibDiamond.DiamondStorage storage ds;
+        bytes32 position = LibDiamond.DIAMOND_STORAGE_POSITION;
+        assembly {
+            ds.slot := position
+        }
+        address facetAddress = ds.selectorToFacetAndPosition[msg.sig].facetAddress;
+
+        // Use delegatecall to call the initialize function in the ERC20Facet
+        bytes memory data = abi.encodeWithSignature("initialize(string,string,uint256,address)", tokenName, tokenSymbol, _contractOwner);
+        (bool success,) = facetAddress.delegatecall(data);
+        require(success, "Initialization failed");
+    }
+
+
+    
     // Find facet for function that is called and execute the
     // function if a facet is found and return any value.
     fallback() external payable {

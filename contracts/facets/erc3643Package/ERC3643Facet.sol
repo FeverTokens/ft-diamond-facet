@@ -4,7 +4,7 @@ pragma solidity >=0.7.0 <0.9.0;
 import "./IERC3643.sol";
 import "./ERC3643Internal.sol";
 
-abstract contract ERC3643Facet is IERC3643, ERC3643Internal {
+contract ERC3643Facet  is IERC3643, ERC3643Internal {
     function addAgent(address _agent) external override {
         _addAgent(_agent);
     }
@@ -25,7 +25,7 @@ abstract contract ERC3643Facet is IERC3643, ERC3643Internal {
         return _canTransfer(_from, _to, _amount);
     }
 
-    function transfer(address _to, uint256 _amount) external override returns (bool) {
+    function transferERC3643(address _to, uint256 _amount) external override returns (bool) {
         _transfer(msg.sender, _to, _amount);
         return true;
     }
@@ -35,7 +35,7 @@ abstract contract ERC3643Facet is IERC3643, ERC3643Internal {
         return true;
     }
 
-    function mint(address _to, uint256 _amount) external override {
+    function mintERC3643(address _to, uint256 _amount) external override {
         _mint(_to, _amount);
     }
 
