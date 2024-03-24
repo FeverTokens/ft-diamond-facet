@@ -21,8 +21,8 @@ contract ERC20Facet is IERC20, ERC20Internal {
         return ERC20Internal._balanceOf(account);
     }
 
-    function transfer(address to, uint256 amount) public override returns (bool) {
-        ERC20Internal._transfer(msg.sender, to, amount);
+    function transferERC20(address to, uint256 amount) public override returns (bool) {
+        ERC20Internal._transferERC20(msg.sender, to, amount);
         return true;
     }
 
@@ -36,15 +36,15 @@ contract ERC20Facet is IERC20, ERC20Internal {
     }
 
     function transferFrom(address from, address to, uint256 amount) public override returns (bool) {
-        ERC20Internal._transfer(from, to, amount);
+        ERC20Internal._transferERC20(from, to, amount);
         ERC20Internal._approve(from, msg.sender, ERC20Internal._allowance(from, msg.sender) - amount);
         return true;
     }
 
     // Additional functions specific to ERC20Facet can be added here
     // For example, if you have a mint function in ERC20Internal, you can expose it like this:
-    function mint(address to, uint256 amount) public {
-        ERC20Internal._mint(to, amount);
+    function mintERC20(address account, uint256 amount) public {
+        ERC20Internal._mintERC20(account, amount);
     }
 
 

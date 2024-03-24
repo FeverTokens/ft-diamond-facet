@@ -22,7 +22,7 @@ abstract contract ERC20Internal is IERC20Internal {
         ERC20Storage.Layout storage l = ERC20Storage.layout();
         return l._allowances[owner][spender];
     }
-    function _transfer(
+    function _transferERC20(
         address from,
         address to,
         uint256 amount
@@ -40,12 +40,12 @@ abstract contract ERC20Internal is IERC20Internal {
             l._balances[to] += amount;
         // }
 
-        emit Transfer(from, to, amount);
+        emit TransferERC20(from, to, amount);
 
         _afterTokenTransfer(from, to, amount);
     }
 
-    function _mint(address account, uint256 amount) internal virtual {
+    function _mintERC20(address account, uint256 amount) internal virtual {
         require(account != address(0), "ERC20: mint to the zero address");
 
         _beforeTokenTransfer(address(0), account, amount);
@@ -55,12 +55,12 @@ abstract contract ERC20Internal is IERC20Internal {
         // unchecked {
             l._balances[account] += amount;
         // }
-        emit Transfer(address(0), account, amount);
+        emit TransferERC20(address(0), account, amount);
 
         _afterTokenTransfer(address(0), account, amount);
     }
 
-    function _burn(address account, uint256 amount) internal virtual {
+    function _burnERC20(address account, uint256 amount) internal virtual {
         require(account != address(0), "ERC20: burn from the zero address");
 
         _beforeTokenTransfer(account, address(0), amount);
@@ -73,7 +73,7 @@ abstract contract ERC20Internal is IERC20Internal {
             l._totalSupply -= amount;
         // }
 
-        emit Transfer(account, address(0), amount);
+        emit TransferERC20(account, address(0), amount);
 
         _afterTokenTransfer(account, address(0), amount);
     }
@@ -111,7 +111,7 @@ abstract contract ERC20Internal is IERC20Internal {
     }
 
     function _transferFrom(address sender, address recipient, uint256 amount) internal virtual returns (bool) {
-        _transfer(sender, recipient, amount);
+        _transferERC20(sender, recipient, amount);
         uint256 currentAllowance = _allowance(sender, _msgSender());
         require(currentAllowance >= amount, "ERC20: transfer amount exceeds allowance");
         _approve(sender, _msgSender(), currentAllowance - amount);

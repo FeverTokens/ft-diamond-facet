@@ -26,8 +26,6 @@ contract DiamondCutFacet is IDiamondCut {
         bytes calldata _calldata
     ) external override {
         LibDiamond.enforceIsContractOwner();
-        // Check for duplicate function selectors before performing the diamond cut
-        // LibDiamond.checkForDuplicateFunctionSelectors(_diamondCut);(_diamondCut);
         LibDiamond.diamondCut(_diamondCut, _init, _calldata);
     }
 

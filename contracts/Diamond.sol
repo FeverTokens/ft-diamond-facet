@@ -24,27 +24,27 @@ contract Diamond {
         LibDiamond.diamondCut(cut, facetAddress, constructData);
     }
 
-    // Function to initialize the diamond contract
-    function initialize(
-        string memory tokenName,
-        string memory tokenSymbol,
-        address _contractOwner
-    ) external {
-        require(msg.sender == LibDiamond.contractOwner(), "Diamond: Must be contract owner");
+    // // Function to initialize the diamond contract
+    // function initialize(
+    //     string memory tokenName,
+    //     string memory tokenSymbol,
+    //     address _contractOwner
+    // ) external {
+    //     require(msg.sender == LibDiamond.contractOwner(), "Diamond: Must be contract owner");
 
-        // Retrieve the facet address from the diamond storage
-        LibDiamond.DiamondStorage storage ds;
-        bytes32 position = LibDiamond.DIAMOND_STORAGE_POSITION;
-        assembly {
-            ds.slot := position
-        }
-        address facetAddress = ds.selectorToFacetAndPosition[msg.sig].facetAddress;
+    //     // Retrieve the facet address from the diamond storage
+    //     LibDiamond.DiamondStorage storage ds;
+    //     bytes32 position = LibDiamond.DIAMOND_STORAGE_POSITION;
+    //     assembly {
+    //         ds.slot := position
+    //     }
+    //     address facetAddress = ds.selectorToFacetAndPosition[msg.sig].facetAddress;
 
-        // Use delegatecall to call the initialize function in the ERC20Facet
-        bytes memory data = abi.encodeWithSignature("initialize(string,string,uint256,address)", tokenName, tokenSymbol, _contractOwner);
-        (bool success,) = facetAddress.delegatecall(data);
-        require(success, "Initialization failed");
-    }
+    //     // Use delegatecall to call the initialize function in the ERC20Facet
+    //     bytes memory data = abi.encodeWithSignature("initialize(string,string,uint256,address)", tokenName, tokenSymbol, _contractOwner);
+    //     (bool success,) = facetAddress.delegatecall(data);
+    //     require(success, "Initialization failed");
+    // }
 
 
     

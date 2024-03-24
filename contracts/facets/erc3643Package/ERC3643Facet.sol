@@ -4,7 +4,7 @@ pragma solidity >=0.7.0 <0.9.0;
 import "./IERC3643.sol";
 import "./ERC3643Internal.sol";
 
-contract ERC3643Facet  is IERC3643, ERC3643Internal {
+ contract ERC3643Facet is IERC3643, ERC3643Internal {
     function addAgent(address _agent) external override {
         _addAgent(_agent);
     }
@@ -25,8 +25,8 @@ contract ERC3643Facet  is IERC3643, ERC3643Internal {
         return _canTransfer(_from, _to, _amount);
     }
 
-    function transferERC3643(address _to, uint256 _amount) external override returns (bool) {
-        _transfer(msg.sender, _to, _amount);
+    function transferERC3643Token(address _to, uint256 _amount) external override returns (bool) {
+        _transferERC3643(msg.sender, _to, _amount);
         return true;
     }
 
@@ -36,14 +36,14 @@ contract ERC3643Facet  is IERC3643, ERC3643Internal {
     }
 
     function mintERC3643(address _to, uint256 _amount) external override {
-        _mint(_to, _amount);
+        _mintERC3643(_to, _amount);
     }
 
-    function burn(address _userAddress, uint256 _amount) external override {
-        _burn(_userAddress, _amount);
+    function burnERC3643(address _userAddress, uint256 _amount) external override {
+        _burnERC3643(_userAddress, _amount);
     }
 
-    // Implement other external functions as required by the ERC-3643 standard
+    // // Implement other external functions as required by the ERC-3643 standard
     function freezeTokens(address user, uint256 amount) external override {
         _freezeTokens(user, amount);
     }
@@ -64,12 +64,12 @@ contract ERC3643Facet  is IERC3643, ERC3643Internal {
         _batchTransfer(recipients, amounts);
     }
 
-    function recoverTokens(address lostWallet, address newWallet, uint256 amount) external override {
+    function recoverTokens(address lostWallet, address newWallet, uint256 amount) external override{
         _recoverTokens(lostWallet, newWallet, amount);
     }
-
-    function recoverTokens(address token, uint256 amount) external  override{
-        _recoverTokens(token, amount);
+    
+    function recoverTokensFromContract(address token, uint256 amount) external override {
+        _recoverTokensFromContract(token, amount);
     }
 
     function stake(uint256 amount) external override {
@@ -87,4 +87,5 @@ contract ERC3643Facet  is IERC3643, ERC3643Internal {
     function swapTokens(address token, uint256 amount) external override {
         _swapTokens(token, amount);
     }
+
 }
