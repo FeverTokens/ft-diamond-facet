@@ -25,14 +25,12 @@ import "./ERC3643Internal.sol";
         return _canTransfer(_from, _to, _amount);
     }
 
-    function transferERC3643Token(address _to, uint256 _amount) external override returns (bool) {
-        _transferERC3643(msg.sender, _to, _amount);
-        return true;
+    function transferERC3643Token(address _to, uint256 _amount) external override {
+        _transferERC3643(msg.sender, _to, _amount);   
     }
 
-    function forcedTransfer(address _from, address _to, uint256 _amount) external override returns (bool) {
+    function forcedTransfer(address _from, address _to, uint256 _amount) external override {
         _forcedTransfer(_from, _to, _amount);
-        return true;
     }
 
     function mintERC3643(address _to, uint256 _amount) external override {

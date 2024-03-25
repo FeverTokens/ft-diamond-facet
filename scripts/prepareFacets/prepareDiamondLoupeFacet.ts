@@ -1,7 +1,7 @@
 import hre from "hardhat";
 import { FacetCutAction, getSelectors } from "../libraries/diamond";
 
-export async function deployDiamondLoupeFacet(contractOwner: string): Promise<any> {
+export async function prepareDiamondLoupeFacet(contractOwner: string): Promise<any> {
     console.log("Deploying DiamondLoupeFacet");
     const facet = await hre.viem.deployContract("DiamondLoupeFacet", []);
     console.log(`DiamondLoupeFacet deployed: ${facet.address}`);
@@ -14,3 +14,4 @@ export async function deployDiamondLoupeFacet(contractOwner: string): Promise<an
     };
     return cut;
 }
+

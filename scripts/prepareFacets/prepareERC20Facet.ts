@@ -1,10 +1,10 @@
 import hre from "hardhat";
 import { FacetCutAction, getSelectors } from "../libraries/diamond";
 
-export async function deployOwnershipFacet(contractOwner: string): Promise<any> {
-    console.log("Deploying OwnershipFacet");
-    const facet = await hre.viem.deployContract("OwnershipFacet", []);
-    console.log(`OwnershipFacet deployed: ${facet.address}`);
+export async function prepareERC20Facet(contractOwner: string): Promise<any> {
+    console.log("Deploying ERC20Facet");
+    const facet = await hre.viem.deployContract("ERC20Facet", []);
+    console.log(`ERC20Facet deployed: ${facet.address}`);
 
     const selectors = getSelectors({ abi: facet.abi });
     const cut = {

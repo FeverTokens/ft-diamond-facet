@@ -1,7 +1,7 @@
 import hre from "hardhat";
 import { FacetCutAction, getSelectors } from "../libraries/diamond";
 
-export async function deployERC3643Facet(contractOwner: string): Promise<any> {
+export async function prepareERC3643Facet(contractOwner: string): Promise<any> {
     console.log("Deploying ERC3643Facet");
     const facet = await hre.viem.deployContract("ERC3643Facet", []);
     console.log(`ERC3643Facet deployed: ${facet.address}`);
@@ -12,5 +12,9 @@ export async function deployERC3643Facet(contractOwner: string): Promise<any> {
         facetAddress: facet.address,
         functionSelectors: selectors,
     };
-    return cut;
+    return {
+        action: FacetCutAction.Add,
+        facetAddress: facet.address, // Ensure this is correctly set
+        functionSelectors: selectors, // Ensure this is correctly set
+    };
 }

@@ -14,8 +14,8 @@ interface IERC3643 is IERC3643Internal {
     function isVerified(address _userAddress) external view returns (bool); // Checks if a user's identity is verified
 
     // Token Transfers
-    function transferERC3643Token(address _to, uint256 _amount) external returns (bool); // Transfers tokens to another address
-    function forcedTransfer(address _from, address _to, uint256 _amount) external returns (bool); // Forced transfer of tokens from one address to another
+    function transferERC3643Token(address _to, uint256 _amount) external ; // Transfers tokens to another address
+    function forcedTransfer(address _from, address _to, uint256 _amount) external ; // Forced transfer of tokens from one address to another
 
     // // Token Management
     function mintERC3643(address _to, uint256 _amount) external; // Mints new tokens and assigns them to an address

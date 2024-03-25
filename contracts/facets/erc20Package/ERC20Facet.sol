@@ -41,8 +41,6 @@ contract ERC20Facet is IERC20, ERC20Internal {
         return true;
     }
 
-    // Additional functions specific to ERC20Facet can be added here
-    // For example, if you have a mint function in ERC20Internal, you can expose it like this:
     function mintERC20(address account, uint256 amount) public {
         ERC20Internal._mintERC20(account, amount);
     }
