@@ -40,25 +40,33 @@ The project exists to solve the problem of upgradability in Ethereum smart contr
 
 ### Installation
 
-1. Clone the repository:
-git clone https://github.com/FeverTokens/ft-diamond-facet.git
+1. Clone the repository
 
 2. Navigate to the project directory:
+
+```bash
 cd yourrepository
+```
 
 3. Install dependencies:
-pnpm install
 
+```
+pnpm install
+```
 
 ### Running the Project
 
 - To compile the smart contracts:
-npx hardhat compile
+
+```
+pnpm compile
+```
 
 - To deploy the smart contracts:
-npx hardhat run --network networkName scripts/deploy.js
 
- Replace `networkName` with the name of the network you want to deploy to.
+```
+pnpm deploy
+```
 
 ## Contributing
 

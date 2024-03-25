@@ -1,7 +1,8 @@
 {
 	"scripts": {
 		"build": "tsc",
-		"deploy": "hardhat run scripts/deploy.ts"
+		"deploy": "hardhat run scripts/deploy.ts",
+		"compile": "pnpm exec hardhat compile"
 	},
 	"devDependencies": {
 		"@nomicfoundation/hardhat-network-helpers": "^1.0.10",
