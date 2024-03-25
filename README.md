@@ -65,7 +65,7 @@ pnpm compile
 - To deploy the smart contracts:
 
 ```
-pnpm deploy
+pnpm deploy:local
 ```
 
 ## Contributing

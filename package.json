@@ -1,7 +1,7 @@
 {
 	"scripts": {
 		"build": "tsc",
-		"deploy": "hardhat run scripts/deploy.ts",
+		"deploy:local": "hardhat run scripts/deploy.ts",
 		"compile": "pnpm exec hardhat compile"
 	},
 	"devDependencies": {
