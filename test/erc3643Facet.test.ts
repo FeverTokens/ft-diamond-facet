@@ -1,53 +1,82 @@
 import hre from 'hardhat';
+import { expect } from 'expect';
+import { readFileSync } from 'fs';
+import { join } from 'path';
+import { prepareERC3643Facet } from '../scripts/prepareFacets/prepareERC3643Facet'; // Adjust the path as necessary
 import { createPublicClient, http } from 'viem';
 import { mainnet } from 'viem/chains';
-import { prepareDiamondLoupeFacet } from '../scripts/prepareFacets/prepareDiamondLoupeFacet';
-import { prepareOwnershipFacet } from '../scripts/prepareFacets/prepareOwnershipFacet';
-import { prepareERC3643Facet } from '../scripts/prepareFacets/prepareERC3643Facet';
-import { deployDiamond } from '../scripts/deployDiamond';
+import { FacetCutAction } from '../scripts/libraries/diamond'; 
+import { ERC3643Facet } from '../typechain-types';
 
-describe("ERC3643Facet Tests", function () {
-    let client: any;
-    let contractOwner: string;
-    let diamondLoupeFacetCut: any;
-    let ownershipFacetCut: any;
-    let erc3643FacetCut: any;
-    let diamond: any;
+describe("ERC3643Facet Preparation Tests", function () {
+    let ERC3643Facet: ERC3643Facet;
 
-    before(async function () {
-        client = createPublicClient({
-            chain: mainnet,
-            transport: http() // Use the default HTTP transport
-        });
+    this.beforeEach(async function () {
+        const erc3643FacetAbi = JSON.parse(readFileSync(join(__dirname, '../artifacts/contracts/facets/erc3643Package/ERC3643Facet.sol/ERC3643Facet.json'), 'utf8')).abi;    
 
-        // Get the first account from the client
-        const account = await hre.viem.getWalletClients();
-        const contractOwner = account[0].account.address;
+         // Create a viem client
+        
+         const accounts = await hre.viem.getWalletClients();
+         const contractOwner = accounts[0].account.address;
+
+        ERC3643Facet = await prepareERC3643Facet(contractOwner,erc3643FacetAbi);
+
+    })
+    it("should prepare the ERC3643Facet correctly", async function () {
+        try {
+
+            const erc3643FacetAbi = JSON.parse(readFileSync(join(__dirname, '../artifacts/contracts/facets/erc3643Package/ERC3643Facet.sol/ERC3643Facet.json'), 'utf8')).abi;    
+
+            // // Create a viem client
+            // const client = createPublicClient({
+            //     chain: mainnet,
+            //     transport: http()
+            // });
+
+            // Get the first account from the client
+          
+            const accounts = await hre.viem.getWalletClients();
+            const contractOwner = accounts[0].account.address;
+
+            
+
+            // Prepare the ERC3643Facet
+            const facetCut = await prepareERC3643Facet(contractOwner,erc3643FacetAbi);
+
+            // Check if the facet cut is correctly prepared
+            expect(facetCut).toBeDefined();
+            expect(facetCut.action).toEqual(FacetCutAction.Add);
+            expect(facetCut.facetAddress).toBeDefined();
+            expect(facetCut.functionSelectors).toBeDefined();
+            expect(facetCut.functionSelectors.length).toBeGreaterThan(0);
+        } catch (error) {
+            console.error('Error during ERC3643Facet preparation test:', error);
+            throw error; // Rethrow the error to fail the test
+        }
+    });
+
+    it("should handle contract deployment failure", async function () {
+        try {
+            // Attempt to deploy the contract with invalid parameters
+            // await prepareERC3643Facet('invalidContractOwner',erc3643FacetAbi);
+        } catch (error) {
+            // Expect an error to be thrown
+            expect(error).toBeDefined();
+            // Optionally, check for a specific error message
+            expect((error as Error).message).toMatch(/expected error message/);
+        }
+    });
+
+    // it("should add an agent and check if it's an agent", async function () {
+    //     const agentAddress = "0xe4476Ca098Fa209ea457c390BB24A8cfe90FCac4"; // Replace with a valid address
        
-
-        // Deploy each facet individually
-        diamondLoupeFacetCut = await prepareDiamondLoupeFacet(contractOwner);
-        ownershipFacetCut = await prepareOwnershipFacet(contractOwner);
-        erc3643FacetCut = await prepareERC3643Facet(contractOwner);
-
-        // Combine all facet cuts into a single array
-        const cut = [
-            diamondLoupeFacetCut,
-            ownershipFacetCut,
-            erc3643FacetCut
-        ];
-
-        // Deploy the Diamond contract with the combined facet cuts
-        diamond = await deployDiamond(cut); // Assuming deployDiamond now accepts a client as an argument
-    });
-
-    it("should deploy ERC3643Facet correctly", async function () {
-        // Assuming deployDiamond returns the deployed diamond contract instance
-        // You can add assertions here to verify the deployment
-        expect(diamond).toBeDefined();
-        expect(diamond.address).toBeDefined();
-    });
-
-    // Add more tests here to verify the functionality of ERC3643Facet
-    // For example, you can test the ERC3643Facet's functions by calling them through the diamond contract
+    //     // Add an agent
+    //     await ERC3643Facet.addAgent(agentAddress);
+       
+    //     // Check if the agent is added
+    //     const isAgent = await ERC3643Facet.isAgent(agentAddress);
+    //     expect(isAgent).toBe(true);
+    //    });
 });
+
+

@@ -19,13 +19,14 @@ export async function deployDiamond(cut: any[]): Promise<string> {
     const Diamond = await hre.viem.deployContract("Diamond", [
         contractOwner,
         diamondCutFacet.address,
-        cut[2].facetAddress, // Assuming this is the ERC20Facet address
+        cut[0].facetAddress, // Assuming this is the ERC20Facet address
         "0xe4476Ca098Fa209ea457c390BB24A8cfe90FCac4", // Replaced placeholder with actual value
     ]);
     console.log("Diamond deployed:", Diamond.address);
 
     // Load ABIs
-    const diamondCutAbi = JSON.parse(readFileSync(join(__dirname, '../artifacts/contracts/interfaces/IDiamondCut.sol/IDiamondCut.json'), 'utf8')).abi;    const diamondInitAbi = diamondInit.abi;
+    const diamondCutAbi = JSON.parse(readFileSync(join(__dirname, '../artifacts/contracts/interfaces/IDiamondCut.sol/IDiamondCut.json'), 'utf8')).abi;  
+    const diamondInitAbi = diamondInit.abi;
 
     // Create a contract instance using the wallet client
     const walletClient = await hre.viem.getWalletClient(contractOwner);

@@ -1,7 +1,7 @@
 import hre from "hardhat";
 import { FacetCutAction, getSelectors } from "../libraries/diamond";
 
-export async function prepareERC3643Facet(contractOwner: string): Promise<any> {
+export async function prepareERC3643Facet(contractOwner: string, erc3643FacetAbi: any): Promise<any> {
     console.log("Deploying ERC3643Facet");
     const facet = await hre.viem.deployContract("ERC3643Facet", []);
     console.log(`ERC3643Facet deployed: ${facet.address}`);
