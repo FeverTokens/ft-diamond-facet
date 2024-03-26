@@ -3,7 +3,7 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 import { encodeFunctionData } from 'viem';
 
-export async function deployDiamond(cut: any[]): Promise<void> {
+export async function deployDiamond(cut: any[]): Promise<string> {
     const accounts = await hre.viem.getWalletClients();
     const contractOwner = accounts[0].account.address;
 
@@ -62,4 +62,5 @@ export async function deployDiamond(cut: any[]): Promise<void> {
             console.error("Failed to add facet:", error);
         }
     }
+    return Diamond.address;
 }

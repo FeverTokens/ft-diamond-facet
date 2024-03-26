@@ -7,14 +7,14 @@ export async function prepareERC3643Facet(contractOwner: string): Promise<any> {
     console.log(`ERC3643Facet deployed: ${facet.address}`);
 
     const selectors = getSelectors({ abi: facet.abi });
-    const cut = {
-        action: FacetCutAction.Add,
-        facetAddress: facet.address,
-        functionSelectors: selectors,
-    };
+    // const cut = {
+    //     action: FacetCutAction.Add,
+    //     facetAddress: facet.address,
+    //     functionSelectors: selectors,
+    // };
     return {
         action: FacetCutAction.Add,
-        facetAddress: facet.address, // Ensure this is correctly set
-        functionSelectors: selectors, // Ensure this is correctly set
+        facetAddress: facet.address, 
+        functionSelectors: selectors, 
     };
 }
